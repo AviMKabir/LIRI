@@ -1,3 +1,14 @@
+require("dotenv").config();
+
+var keys = require("./keys.js");
+
+var Spotify = require('node-spotify-api');
+
+
+var spotify = new Spotify(keys.spotify);
+
+
+
 var axios = require("axios");
 
 
@@ -14,8 +25,9 @@ switch (action) {
 
         break;
 
-    case "deposit":
-
+    case "spotify-this-song":
+      getSong();
+      console.log("Getting song...");
         
         break;
 
@@ -32,7 +44,19 @@ switch (action) {
 function getMovie () {
 
 
-    var movieName = process.argv[3];
+if (process.argv[3] != null) {
+
+  var movieName = process.argv[3];
+
+  
+}
+
+else {
+
+  var movieName = "Mr.+Nobody";
+
+}
+
 
     
 
@@ -50,9 +74,7 @@ function getMovie () {
     
     axios.get(queryUrl).then(
       function(response) {
-    
-        console.log("SUCCESS");
-        
+            
     
         console.log("---------------TITLE---------------");
         console.log("Title: " + response.data.Title);
@@ -112,3 +134,51 @@ function getMovie () {
 };
 
 
+function getSong () {
+
+
+  if (process.argv[3] != null) {
+
+    var querySearch = process.argv[3];
+  
+    
+  }
+  
+  else {
+  
+    var querySearch = 'All the Small Things';
+  
+  }
+  
+
+
+  spotify.search({ type: 'track', query: querySearch }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+
+    else {
+      //Iterate into spotify object by saving path in variable
+      var albumInfo = data.tracks.items;
+
+      //Display Object containing all info: Artist, Song Name, Preview url, Album
+      console.log("=========SONG-INFO=============");
+      // artist name
+      console.log(albumInfo[0].artists[0].name);
+      // song name
+      console.log(albumInfo[0].name);
+      // url
+      console.log(albumInfo[0].external_urls.spotify);
+      // album names
+      console.log(albumInfo[0].album.name);
+
+
+
+  }
+   
+  // console.log(data); 
+  });
+
+
+
+}
