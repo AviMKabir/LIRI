@@ -31,7 +31,10 @@ switch (action) {
         
         break;
 
-        case "withdraw":
+        case "concert-this":
+          getConcert();
+          console.log("Getting concert...");
+
 
                 
                 break;
@@ -181,4 +184,85 @@ function getSong () {
 
 
 
-}
+};
+
+
+function getConcert() {
+
+
+  if (process.argv[3] != null) {
+  
+    var artist = process.argv[3];
+  
+    
+  }
+  
+  else {
+  
+    var artist = "the+1975";
+  
+  }
+  
+  
+      
+  
+  
+      // Then run a request with axios 
+      var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+      
+      
+      // This line is just to help us debug against the actual URL.
+      console.log(queryUrl);
+      
+      
+      // Then create a request with axios to the queryUrl
+      // ...
+      
+      axios.get(queryUrl).then(
+        function(response) {
+              
+      
+          console.log(response.data[0]);
+
+          // venue name
+          console.log("venue name: " + response.data[0].venue.name);
+
+          // venue location
+          console.log("venue location: " + response.data[0].venue.city + ", " + response.data[0].venue.country);
+
+          // venue date
+          console.log("venue date: " + response.data[0].datetime);
+
+      
+      
+        })
+        .catch(function(error) {
+          if (error.response) {
+      
+              console.log("ERROR");
+      
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("---------------Data---------------");
+            console.log(error.response.data);
+            console.log("---------------Status---------------");
+            console.log(error.response.status);
+            console.log("---------------Status---------------");
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an object that comes back with details pertaining to the error that occurred.
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+          }
+          console.log(error.config);
+        });
+      
+      
+    
+  
+  
+  
+  };
