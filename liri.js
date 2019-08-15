@@ -4,6 +4,10 @@ var keys = require("./keys.js");
 
 var Spotify = require('node-spotify-api');
 
+var moment = require('moment');
+
+
+
 
 var spotify = new Spotify(keys.spotify);
 
@@ -230,8 +234,19 @@ function getConcert() {
           // venue location
           console.log("venue location: " + response.data[0].venue.city + ", " + response.data[0].venue.country);
 
+          var showDateRaw = response.data[0].datetime
+
+
+          var showDateCon = moment(showDateRaw).format("MM/DD/YYYY");
+          // console logging converted date
+          // console.log(showDateCon);
+
+
           // venue date
-          console.log("venue date: " + response.data[0].datetime);
+          console.log("venue date: " + showDateCon);
+
+          // this is the date variable
+
 
       
       
